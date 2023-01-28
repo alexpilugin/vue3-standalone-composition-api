@@ -1,0 +1,78 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue 3 standalone</title>
+    <script src="https://unpkg.com/vue@3.0.2"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      input[type="text"] {
+        width: 10rem;
+        padding: 6px 12px;
+        margin: 4px 0;
+        display: inline-block;
+        border: 1px solid black;
+        border-radius: 4px;
+      }
+      input:focus {
+        outline: none;
+      }
+      button {
+        cursor: pointer;
+        background: red;
+        border: 0;
+        border-radius: 4px;
+        color: white;
+        padding: 4px 14px;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+      }
+      button:hover {
+        background: darkred;
+      }
+      button:disabled,
+      button[disabled] {
+        pointer-events: none;
+        cursor: default;
+        background: gray;
+      }
+      .inline-block {
+        position: relative;
+        display: inline-block;
+        width: 15rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h1>{{ msg || 'Hello!' }}</h1>
+      <div class="inline-block">
+        <input type="text" v-model="msg" placeholder="Type here" />
+        <button @click="clear" :disabled="disabledBtn">Clear</button>
+      </div>
+    </div>
+
+    <script>
+      const { createApp, ref, watch } = Vue;
+
+      const App = {
+        setup() {
+          const msg = ref("");
+          const clear = () => (msg.value = "");
+
+          const disabledBtn = ref(true);
+          const checkInput = () => (disabledBtn.value = msg.value === "");
+          watch(msg, checkInput);
+
+          return { msg, disabledBtn, clear };
+        },
+      };
+      const app = createApp(App);
+      app.mount("#app");
+    </script>
+  </body>
+</html>
